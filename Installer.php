@@ -12,6 +12,7 @@ class Installer {
 	public $db_user;
 	public $db_pass;
 	public $db_name;
+	public $db_port;
 	public $db_host = 'localhost';
 
 	private $app;
@@ -243,15 +244,34 @@ class Installer {
 			],[
 				'name' => 'Configuration file permissions',
 				'pass' => is_writeable($this->path.'config.php'),
-				'feedback' => 'Your "config.php" file is not writeable by the webserver',
+				'feedback' => "Your 'config.php' file is not writeable by the webserver. Try changing the permissions: ".
+						"<code>touvh ".$this->path."config.php\nchmod 666 ".$this->path."config.php</code>",
 				'fatal' => true
 			],[
 				'name' => 'Data folder permissions',
 				'pass' => is_writeable($this->data_folder),
-				'feedback' => 'The data folder "'.$this->data_folder.'" is not writable by the webserver. Change the permissions or pick a different folder',
+				'feedback' => 'The data folder "'.$this->data_folder.'" is not writable by the webserver. Change the permissions or pick a different folder.'.
+					"<code>mkdir ".$this->data_folder."\nchown www-data:www-data ".$this->data_folder."</code>",
+				'fatal' => true
+			],[
+				'name' => 'Database connection',
+				'pass' => $this->dbConnect(),
+				'feedback' => 'Could not connect to the database. Please check the connection parameters.',					
 				'fatal' => true
 			]
 		];
+	}
+	
+	private function dbConnect() {
+		try {
+			$dsn = "mysql:host=".$this->db_host.";dbname=".$this->db_name.";port=".$this->db_port;
+			
+			$pdo = new \PDO($dsn, $this->db_user, $this->db_pass);
+			
+			return true;
+		} catch (\PDOException $e) {
+			return false;
+		}
 	}
 
 	private function writeConfig() {
@@ -289,6 +309,7 @@ EOF;
 			}
 		}
 		} catch (\Exception $e) {
+			
 			return false;
 		}
 		$json = ob_get_contents();
