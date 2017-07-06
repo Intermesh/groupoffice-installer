@@ -27,3 +27,4 @@ gulp build
 mv build/* ..
 cd ..
 cp config.js.example config.js
+rm -rf groupoffice-webclient

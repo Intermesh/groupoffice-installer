@@ -245,7 +245,7 @@ class Installer {
 				'name' => 'Configuration file permissions',
 				'pass' => is_writeable($this->path.'config.php'),
 				'feedback' => "Your 'config.php' file is not writeable by the webserver. Try changing the permissions: ".
-						"<code>touvh ".$this->path."config.php\nchmod 666 ".$this->path."config.php</code>",
+						"<code>touch ".$this->path."config.php\nchmod 666 ".$this->path."config.php</code>",
 				'fatal' => true
 			],[
 				'name' => 'Data folder permissions',
