@@ -294,7 +294,7 @@ EOF;
 	}
 
 	public function start() {
-		ob_start();
+	
 		try {
 		if($this->writeConfig()){
 			$app = $this->getApp();
@@ -308,16 +308,10 @@ EOF;
 				});
 			}
 		}
-		} catch (\Exception $e) {
-			
-			return false;
+		} catch (\Exception $e) {			
+			return $e->getMessage();
 		}
-		$json = ob_get_contents();
-		ob_end_clean();
-		$data = json_decode($json);
-		if(!$data['success']) {
-			return $data['errors'];
-		}
+		
 		return true;
 	}
 }

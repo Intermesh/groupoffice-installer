@@ -118,8 +118,9 @@ ob_start();
 	if($startSetup) {
 		echo '<script type="text/javascript">
 			clearInterval(loading);';
-	   if($setup->start() !== true){
-			echo 'document.getElementById(\'process\').textContent = \'Installation failed\';';
+		$result = $setup->start() ;
+	   if($result !== true){
+			echo 'document.getElementById(\'process\').textContent = \'Installation failed:\ '. $result. '\';' ;
 		} else {
 			echo 'document.getElementById(\'process\').textContent = \'Installation complete\';
 				document.getElementById(\'btnContinue\').style="";';
