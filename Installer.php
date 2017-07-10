@@ -309,6 +309,7 @@ EOF;
 			}
 		}
 		} catch (\Exception $e) {			
+//			return (string) $e;
 			return $e->getMessage();
 		}
 		
